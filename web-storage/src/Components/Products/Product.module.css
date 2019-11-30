@@ -1,0 +1,25 @@
+.img{
+    text-align: center;
+    width: 90%;
+    margin: 5px;
+}
+.productdiv{
+    text-align: center;
+    background :rgb(243, 238, 231); 
+    border-style: ridge;
+    margin: 5px;
+    padding: 5px;
+    border-width: 2px;
+    border-radius: 3%;
+}
+.div{
+    text-align: center;
+    font-size: 14px;    
+    background: rgb(243, 238, 231);
+    color: brown
+}
+.button{
+    width: 20px;
+    height: 20px;
+}
+
