@@ -40,7 +40,8 @@ class Login extends React.Component {
             console.log(JSON.stringify(myJson));
             if(200 === result.status){
                 console.log("Response " + result.status)
-                // document.cookie = "isAuthed = true"
+                setCookie("isAuthed","true",1)
+                setCookie("accessToken",myJson.accessToken,1)
                 this.sendData(true)
                 this.props.history.push('/home');
 
@@ -111,4 +112,10 @@ class Login extends React.Component {
         );
     }
 }
+function setCookie(cname, cvalue, exHours) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exHours*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
 export default Login

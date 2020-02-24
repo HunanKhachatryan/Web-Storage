@@ -1,24 +1,8 @@
 import React from 'react'
-import { Navbar, NavLink,NavItem, Nav,Collapse } from 'reactstrap';
+import { Navbar, NavLink,NavItem, Nav } from 'reactstrap';
 class NavBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isOpen:true
-        };
-        this.handleClose = this.handleClose.bind(this)
-        this.handleOpen = this.handleOpen.bind(this)
-    }
-    handleOpen = () => {
-        this.setState({ isOpen: true })
-      }
-
-    handleClose = () => {
-        this.setState({ isOpen: false })
-    }
     render(){
-        return( <Navbar color = 'dark' onMouseOver ={this.handleOpen} onMouseLeave={this.handleClose} >
-                    <Collapse isOpen = {this.state.isOpen}  >
+        return( <Navbar color = 'dark' >
                         <Nav>
                             <NavItem>
                                 <NavLink href = '/home'>Home</NavLink>
@@ -33,7 +17,6 @@ class NavBar extends React.Component {
                                 <NavLink href = '/products'>Products</NavLink>
                             </NavItem>
                         </Nav> 
-                    </Collapse>
                 </Navbar>
         );
     }

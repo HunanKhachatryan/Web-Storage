@@ -1,15 +1,13 @@
 import React from 'react';
-import {Row, Col,Input, Button } from 'reactstrap';
-import Product from '../Products/Product'
+import {Row, Col,Input, Button} from 'reactstrap';
 import NavBar from '../NavBar/Navbar';
-import style from './HomePage.module.css'
 
-class Example extends React.Component{
+class HomePage extends React.Component{
   constructor(props){
       super(props)
       this.state = {
             products:[],
-          isOpen:true
+            showModal: false
         }
       this.handleChange = this.handleChange.bind(this);
       this.onClick = this.onClick.bind(this)
@@ -25,37 +23,19 @@ class Example extends React.Component{
     if (e.target.id === "add"){
         this.setState({count:this.state.count + 1})
     }
-    if (e.target.id === "Search"){
-        this.setState({count:this.state.count + 1})
-    }
+    // if (e.target.id === "Search"){
+        this.setState({showModal:!this.state.showModal})
+    // }
   }
   
-  componentDidMount = async () => {
-    try {
-        const result = await fetch('http://localhost:8080/products?name=Cola 500ml', {
-            method: 'GET',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'AccessTocken': 'Accesss'
-            }
-        })                
-
-        const myJson = await result.json();
-        if(200 === result.status){
-            this.setState({products:myJson})
-        }else{
-            console.log(result)
-            alert(result);
-        }
-            
-    }catch (error) {
-        alert(`Password or Username is false ${error}`);
-    }
-
-  }
+  
 render(){ 
-    console.log(this.state)
+    if (getCookie("isAuthed") !== "true" ){
+        console.log(getCookie("isAuthed"))
+        return <React.Fragment>
+            "message" : "Forbiden"
+        </React.Fragment>
+    }
   return (
         <React.Fragment>
             <Row>
@@ -78,11 +58,31 @@ render(){
                 </Col>
             </Row>
             <Row>
-                {this.state.products.map((product,index) => (<Col xs = '6'md= '3' sm ="4" lg ='2'><Product productName = {product.name}productNumber = {index + 1} price = {product.price}></Product></Col>))}
+            <button onClick={this.onClick}>
+             Open the modal
+            </button>
+                <Col> sdsdsd
+                
+                </Col>
             </Row>
         </React.Fragment>
       
     
   );}
 }
-export default Example;
+export function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+export default HomePage;

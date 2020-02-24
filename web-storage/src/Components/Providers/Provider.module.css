@@ -1,27 +1,30 @@
-.img{
+.img {
     text-align: center;
-    width: 90%;
+    width: 100%;
+    height: 8em;
     margin: 5px;
 }
-.productdiv{
+
+.productdiv {
     text-align: center;
-    background :rgb(243, 238, 231); 
+    background: rgb(243, 238, 231);
     border-style: ridge;
     margin: 5px;
     padding: 5px;
     border-width: 2px;
     border-radius: 3%;
-}
-.div{
-    text-align: center;
-    font-size: 14px;    
+}   
+
+.div {
+    text-align: left;
+    font-size: 13px;
     background: rgb(243, 238, 231);
     color: brown
 }
 
-.modal{
+
+.modal {
     width: 50px;
     height: 50px;
     color: brown
 }
-

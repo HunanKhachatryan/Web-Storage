@@ -1,21 +1,20 @@
 import React from 'react'
 import {Row, Col, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
-import Product from './Product'
+import Product from './Provider'
 import NavBar from '../NavBar/Navbar'
-import CreateProduct from './Create Product/CreateProduct'
+import CreateProvider from './Create Provider/CreateProvider'
 import {getCookie} from '../HomePage/HomePage'
-import  './style.css'
+import  style from  './Provider.module.css'
 
-class Products extends React.PureComponent {
+export default class Providers extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            products: [],
+            providers: [],
             isOpen:true,
-
             showModal: false
         };
-        this.getProducts = this.getProducts.bind(this)
+        this.getProviders = this.getProviders.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleCloseModal = this.handleCloseModal.bind(this)
 
@@ -29,10 +28,10 @@ class Products extends React.PureComponent {
         this.setState({value: event.target.value, products:newProducts})
     
     }
-    getProducts = async () => {
+    getProviders = async () => {
         try {
             let accessToken = getCookie("accessToken")
-            const result = await fetch('http://localhost:8080/products', {
+            const result = await fetch('http://localhost:8080/providers', {
                 method: 'GET',
                 headers: {
                 'Accept': 'application/json',
@@ -42,7 +41,7 @@ class Products extends React.PureComponent {
             })                
             const myJson = await result.json();
             if(200 === result.status){
-                this.setState({products:myJson})
+                this.setState({providers:myJson})
             }else{
                 console.log(result)
                 alert(result);
@@ -53,7 +52,7 @@ class Products extends React.PureComponent {
         }
     }
     componentDidMount(){
-        this.getProducts()
+        this.getProviders()
     }
 
     render(){ 
@@ -63,7 +62,7 @@ class Products extends React.PureComponent {
                 "message" : "Forbiden"
             </React.Fragment>
         }
-        const close = <Button className="closeButton" color="danger" onClick={this.handleCloseModal}>X</Button>
+        const close = <Button className={style.closeButton} color="danger" onClick={this.handleCloseModal}>X</Button>
         return( <React.Fragment >
                     <Row>
                         <Col>
@@ -72,17 +71,16 @@ class Products extends React.PureComponent {
                     </Row>
                     <Row>
                         <Col>
-                            <h3> Products </h3>
+                            <h3> Providers </h3>
                         </Col>
                         <Col lg = "2" md = "2" sm = "2">
-                            <Button color="success" onClick={this.handleCloseModal}>Add Product</Button>
+                            <Button color="success" onClick={this.handleCloseModal}>Add Provider</Button>
                             <Modal className = "custom-modal" size="sm" isOpen={this.state.showModal} toggle={this.onClick} >
-                                    <ModalHeader className = "custom-modal" toggle={this.onClick} close ={close}>
-                                            Add Product 
+                                    <ModalHeader className = "custom-modal" toggle={this.onClick} close ={close}>Add Provider 
                                     </ModalHeader>
                                     
                                 <ModalBody >
-                                    <CreateProduct toggle={this.handleCloseModal} getProducts = {this.getProducts}  ></CreateProduct>
+                                    <CreateProvider className ={style.Container} toggle={this.handleCloseModal} getProducts = {this.getProducts}  ></CreateProvider>
                                 </ModalBody>
                             </Modal>
                         </Col> 
@@ -90,9 +88,9 @@ class Products extends React.PureComponent {
                     <Row>
                         <Col>
                             <Row>
-                            {this.state.products.map((product,index) => (
+                            {this.state.providers.map((provider,index) => (
                                 <Col xs = '6' md= '3' sm ="4" lg ='2'>
-                                    <Product removeHandler = {this.getProducts} productName = {product.name} productId ={product.productId} productNumber = {index + 1} price = {product.price} count ={product.count} img = {product.image}></Product>
+                                    <Product removeHandler = {this.getProviders} name = {provider.name} id ={provider.providerId} phone = {provider.phone} surname = {provider.surname} email ={provider.email} img = {provider.image}></Product>
                                 </Col>))}
 
                             </Row>
@@ -102,4 +100,3 @@ class Products extends React.PureComponent {
         );
     }
 }
-export default Products;
