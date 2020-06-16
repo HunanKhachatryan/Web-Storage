@@ -215,7 +215,7 @@ module.exports.getBestShopsByTotalCount = function (data) {
                 endDate = data.endDate
             }
         }
-        let insertQuery = "select shopId, name, address, email, totalCount, image from Shops inner join( select shop , sum(shop) totalCount from SaledProducts where saledDate BETWEEN ? AND ? group by shop desc ) as BestProviders on shopId = shop";
+        let insertQuery = "select shopId, name, address,phone, email, totalCount, image from Shops inner join( select shop , sum(shop) totalCount from SaledProducts where saledDate BETWEEN ? AND ? group by shop desc ) as BestProviders on shopId = shop";
         let query = mysql.format(insertQuery, [startDate, endDate]);
         connection.query(query, function (error, results) {
             if (error) {
