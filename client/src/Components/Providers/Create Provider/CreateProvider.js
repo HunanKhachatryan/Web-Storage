@@ -10,6 +10,7 @@ export default class CreateProduct extends React.Component {
             surname: '',
             phone: '',
             email: '',
+            passport: '',
             img: null
         }
         this.onClick = this.onClick.bind(this);
@@ -30,6 +31,9 @@ export default class CreateProduct extends React.Component {
             case "provider email":
                 this.setState({email:e.target.value});
                 break;
+            case "provider passport":
+                this.setState({passport:e.target.value});
+                break;
             case "provider image":
                 this.setState({ img: e.target.files[0]});
                 break;
@@ -43,13 +47,14 @@ export default class CreateProduct extends React.Component {
         formData.append('surname', this.state.surname);
         formData.append('phone', this.state.phone);
         formData.append('email', this.state.email);
+        formData.append('passportId', this.state.passport);
         formData.append('image', this.state.img,this.state.img.name);
       let response = await fetch('http://localhost:8080/providers', {
         method: 'POST',
         body: formData
       });
       if (response.status === 200) {
-
+          console.log(response)
         this.props.getProviders()
         this.props.toggle()
       }
@@ -63,6 +68,9 @@ export default class CreateProduct extends React.Component {
             </div>
             <div className = "form-group">
                 <Input type = "text" id = "provider surname" pattern="[A-Z]{1}[a-z]{2,20}" onChange = {this.onChange} placeholder= "Surname" required/>
+            </div>
+            <div className = "form-group">
+                <Input type = "text" id = "provider passport" pattern="[A-Z]{2}[0-9]{7}" onChange = {this.onChange} placeholder= "Passport Number" required/>
             </div>
             <div className = "form-group">
                 <Input type = "tel" id = "provider phone" pattern="[0-9]{9}" onChange = {this.onChange} placeholder= "Phone " required/>

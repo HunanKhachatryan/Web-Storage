@@ -42,7 +42,7 @@ module.exports.getUsers = function () {
       let createEvent = "Create Event IF NOT EXISTS clearToken ON SCHEDULE EVERY 1 Hour  do update Users set accessTocken = NULL where accessTokenDate < time(now()) - Interval 1 Hour;"
       connection.query(mysql.format(createEvent), function (error, result) {
         if (error) {
-          console.log(error)
+          console.error(error)
           reject(error);
         } else {
           resolve(result);
@@ -51,15 +51,12 @@ module.exports.getUsers = function () {
       let globalSchedul = "set global event_scheduler = on;"
       connection.query(mysql.format(globalSchedul), function (error, result) {
         if (error) {
-          console.log(error)
+          console.error(error)
           reject(error);
         } else {
           resolve(result);
         }
-      });
-
-      //Create Event IF NOT EXISTS removeProduct ON SCHEDULE EVERY 1 Day  do Delete From Products where expiration < time(now());
-      
+      });      
     });
   }
   

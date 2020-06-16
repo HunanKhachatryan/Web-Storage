@@ -25,8 +25,11 @@ class Products extends React.PureComponent {
         this.setState({ products:newProducts})
     
     }
-    getProducts = async () => {
+    getProducts = async (filter) => {
         try {
+            if (filter === ""){
+                
+            }
             let accessToken = getCookie("accessToken")
             const result = await fetch('http://localhost:8080/products', {
                 method: 'GET',
@@ -47,10 +50,12 @@ class Products extends React.PureComponent {
             alert(error);
         }
     }
-    componentDidMount(){
-        this.getProducts()
+    componentDidMount = async (e) =>{
+        await this.getProducts()
+        this.state.products.map((product,index) => 
+            console.log(product.productId)    
+            )
     }
-
     render(){ 
         if (getCookie("isAuthed") !== "true" ){
             return <React.Fragment>
@@ -83,7 +88,7 @@ class Products extends React.PureComponent {
                     <Row>
                         {this.state.products.map((product,index) => 
                             <Col key = {index} xs = '6' md= '3' sm ="4" lg ='2'>
-                                <Product removeHandler = {this.getProducts} productName = {product.name} productId ={product.productId} productNumber = {index + 1} price = {product.price} count ={product.count} img = {product.image}></Product>
+                                <Product removeHandler = {this.getProducts} productName = {product.name} productId = {product.productId} productNumber = {index + 1} price = {product.price} count ={product.count} img = {product.image}></Product>
                             </Col>
                             )}                      
                     </Row>

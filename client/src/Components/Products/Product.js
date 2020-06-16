@@ -1,5 +1,5 @@
 import React from 'react'
-import {Row, Col, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import style from './Product.module.css'
 import SaleProduct from './SaleProduct/SaleProduct';
 class Product extends React.PureComponent {
@@ -51,30 +51,28 @@ class Product extends React.PureComponent {
         }
     }
     render(){
-        return( <React.Fragment>
-                        <Row>
-                            <Col>
-                                <div className = {style.productdiv} onMouseEnter = {this.onMouseEnterHandler}  onMouseLeave = {this.onMouseLeaveHandler} >
-                                    <button className = {style.deleteBtn} value ={this.props.productId} onClick ={this.removeProduct}>X</button>
-                                    <img className = {style.img} src = {this.imageHandler()} alt = {"img"}  ></img>
-                                    <div className = {style.div}>
-                                        #{this.props.productNumber} {this.props.productName}
-                                       <p> Price: {this.props.price}</p>
-                                       <p>Count: {this.props.count}</p>
-                                       <button className = {style.saleBtn} value ={this.props.productId} onClick ={this.handleCloseModal}>Sale</button>
-                                    </div>
-                                    <Modal className = "custom-modal" size="sm" isOpen={this.state.showModal} toggle={this.onClick} >
-                                    <ModalHeader className = "custom-modal" toggle={this.onClick} close ={<Button className="closeButton" color="danger" onClick={this.handleCloseModal}>X</Button>}>
-                                            Sale Product 
-                                    </ModalHeader>
-                                <ModalBody >
-                                    <SaleProduct toggle={this.handleCloseModal} ></SaleProduct>
-                                </ModalBody>
-                            </Modal>
-                                </div>
-                            </Col>
-                       </Row>
-                    </React.Fragment>
+        if (this.props.count !== undefined){
+            var totalCount = <p>Total count : {this.props.count}</p>
+            var saleBtn = <button className = {style.saleBtn} value ={this.props.productId} onClick ={this.handleCloseModal}>Sale</button>
+        }
+        return(
+            <div className = {style.productdiv} onMouseEnter = {this.onMouseEnterHandler}  onMouseLeave = {this.onMouseLeaveHandler} >
+                <img className = {style.img} src = {this.imageHandler()} alt = {"img"}  ></img>
+                <div className = {style.div}>
+                    #{this.props.productNumber} {this.props.productName}
+                    <p> Price: {this.props.price}</p>
+                    {totalCount}
+                    {saleBtn}
+                </div>
+                <Modal className = "custom-modal" size="sm" isOpen={this.state.showModal} toggle={this.onClick} >
+                    <ModalHeader className = "custom-modal" toggle={this.onClick} close ={<Button className="closeButton" color="danger" onClick={this.handleCloseModal}>X</Button>}>
+                        Sale Product
+                    </ModalHeader>
+                    <ModalBody >
+                        <SaleProduct removeHandler = {this.props.removeHandler} handleCloseModal={this.handleCloseModal} productId ={this.props.productId}></SaleProduct>
+                    </ModalBody>
+                </Modal>
+            </div>
         );
     }
 }

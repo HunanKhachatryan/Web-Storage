@@ -1,13 +1,19 @@
 import React from 'react';
 import {Row, Col} from 'reactstrap';
 import NavBar from '../NavBar/Navbar';
-import Products from '../Products/Products'
+import Product from '../Products/Product'
+import Shop from '../Shops/Shop'
+import Provider from '../Providers/Provider'
 
 class HomePage extends React.Component{
   constructor(props){
       super(props)
       this.state = {
-            products:[],
+            statistics:{
+              products:[],
+              shops:[],
+              providers:[]
+            },
             showModal: false
         }
       this.handleChange = this.handleChange.bind(this);
@@ -23,9 +29,31 @@ class HomePage extends React.Component{
     if (e.target.id === "add"){
         this.setState({count:this.state.count + 1})
     }
-        this.setState({showModal:!this.state.showModal})
+    this.setState({showModal:!this.state.showModal})
   }
-  
+  componentDidMount = async (e) =>{
+    try {
+      let accessToken = getCookie("accessToken")
+      const result = await fetch('http://localhost:8080/statistics', {
+          method: 'GET',
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'AccessTocken': accessToken
+          }
+      })                
+      const myJson = await result.json();
+      if(200 === result.status){
+        console.log(myJson)
+          this.setState({statistics:myJson})
+      }else{
+          alert(result);
+      }
+          
+  }catch (error) {
+      alert(error);
+  }
+}
   
 render(){ 
     if (getCookie("isAuthed") !== "true" ){
@@ -41,26 +69,36 @@ render(){
                 </Col>
             </Row>
             <Row>
-                <Col> Most sold products
-                </Col>
+              <Col> Most popular products </Col>
             </Row>
             <Row>
-                <Col > Best providers
-
+              {this.state.statistics["products"].map((product,index) => 
+                <Col key = {index} xs = '6' md= '3' sm ="4" lg ='2'>
+                    <Product  productName = {product.name} productId = {product.productId} productNumber = {index + 1} price = {product.price}  img = {product.image}></Product>
                 </Col>
+              )}
             </Row>
             <Row>
-              <Products>
-                
-              </Products>
+                <Col> Best providers </Col>
             </Row>
             <Row>
-                <Col> Best shops
+              {this.state.statistics["providers"].map((provider,index) => 
+                <Col key = {index} xs = '6' md= '3' sm ="4" lg ='2'>
+                    <Provider  name = {provider.name} id ={provider.providerId} phone = {provider.phone} surname = {provider.surname} email ={provider.email} img = {provider.image}></Provider>
                 </Col>
+              )}
+            </Row>
+            <Row>
+                <Col> Best shops </Col>
+            </Row>
+            <Row>
+              {this.state.statistics["shops"].map((shop,index) => 
+                <Col key = {index} xs = '6' md= '3' sm ="4" lg ='2'>
+                    <Shop  name = {shop.name} id ={shop.shopId} phone = {shop.phone} address = {shop.address} email ={shop.email} img = {shop.image}></Shop>
+                </Col>
+              )}
             </Row>  
-        </React.Fragment>
-      
-    
+        </React.Fragment>    
   );}
 }
 export function getCookie(cname) {

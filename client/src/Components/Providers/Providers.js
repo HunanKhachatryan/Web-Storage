@@ -91,8 +91,8 @@ export default class Providers extends React.PureComponent {
                         <Col>
                             <Row>
                             {this.state.providers.map((provider,index) => (
-                                <Col xs = '6' md= '3' sm ="4" lg ='2'>
-                                    <Provider removeHandler = {this.getProviders} name = {provider.name} id ={provider.providerId} phone = {provider.phone} surname = {provider.surname} email ={provider.email} img = {provider.image}></Provider>
+                                <Col key = {index} xs = '6' md= '3' sm ="4" lg ='2'>
+                                    <Provider  removeHandler = {this.getProviders} name = {provider.name} id ={provider.providerId} phone = {provider.phone} surname = {provider.surname} email ={provider.email} img = {provider.image}></Provider>
                                 </Col>))}
 
                             </Row>

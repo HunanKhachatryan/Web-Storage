@@ -59,10 +59,10 @@ export default class AddShop extends React.Component {
         return (
         <form onSubmit = {this.onClick}>
             <div className = "form-group">
-                <Input type = "text" id = "shop name" pattern="[A-Z]{1}[a-z]{2,15}" onChange = {this.onChange} placeholder= "Name" required />
+                <Input type = "text" id = "shop name" pattern="^[A-Za-z0-9_]+( [A-Za-z0-9_]+)*$" onChange = {this.onChange} placeholder= "Name" required />
             </div>
             <div className = "form-group">
-                <Input type = "text" id = "shop address" pattern="[A-Z]{1}[a-z 0-9]{2,20}" onChange = {this.onChange} placeholder= "Address" required/>
+                <Input type = "text" id = "shop address" pattern="^[A-Za-z0-9_]+( [A-Za-z0-9_]+)*$" onChange = {this.onChange} placeholder= "Address" required/>
             </div>
             <div className = "form-group">
                 <Input type = "tel" id = "shop phone" pattern="[0-9]{9}" onChange = {this.onChange} placeholder= "Phone " required/>

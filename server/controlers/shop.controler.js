@@ -51,7 +51,11 @@ module.exports.getShop = async function (req, res) {
 
 module.exports.deleteShop = async function (req, res) {
     try{
-        const result = await shop.deleteShop(req.query)
+        const shopInfo = {
+            "shopId":req.query["shopId"],
+            "isCustomer":false
+        }
+        const result = await shop.updateShopStatus(shopInfo)
         return res.status(200).json(result)
     }catch(error){
         return res.status(500).json(error)

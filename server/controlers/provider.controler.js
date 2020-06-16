@@ -11,7 +11,6 @@ logger.level = "debug";
 module.exports.addProvider = async function (req, res) {
     const err = validationResult(req)
     if (!err.isEmpty()) {
-        console.log(err)
         return res.status(422).json(err.errors);
     }
     let image = fs.readFileSync(req.files[0].path)
@@ -55,13 +54,17 @@ module.exports.deleteProvider = async function (req, res) {
         return res.sendStatus(400);
     }
     try{
-        const result = await provider.deleteProvider(req.query)
+        
+        const providerInfo = {
+            "providerId":req.query["providerId"],
+            "isEmploy":false
+        }
+        const result = await provider.updateProviderStatus(providerInfo)
+        
         return res.status(200).json(result)
     }catch(error){
         return res.status(500).json(error)
     }
-   
-
 }
 function isEmpty(obj) {
     for(var key in obj) {

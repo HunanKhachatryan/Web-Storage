@@ -4,7 +4,6 @@ import { Button, Input } from 'reactstrap'
 export default class CreateProduct extends React.Component {
     constructor(props) {
         super(props);
-
          this.state = {
             productName: '',
             productPrice: '',
@@ -12,7 +11,7 @@ export default class CreateProduct extends React.Component {
             expiration:  Date,
             productImg: null
         }
-        this.onSubmit = this.onSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
        
     }
@@ -37,13 +36,15 @@ export default class CreateProduct extends React.Component {
         }
     }
 
-    onSubmit  = async (e)=>{
+    async handleSubmit (e){
+        e.preventDefault()
         const formData = new FormData();
         formData.append('productName', this.state.productName);
         formData.append('productPrice', this.state.productPrice);
         formData.append('productDate', this.state.productDate);
         formData.append('expiration', this.state.expiration);
         formData.append('productImg', this.state.productImg,this.state.productImg.name);
+        console.log(this.state.productImg)
       let response = await fetch('http://localhost:8080/products', {
         method: 'POST', 
         body: formData
@@ -55,9 +56,9 @@ export default class CreateProduct extends React.Component {
     }
     render() {
         return (
-        <form onSubmit = {this.onSubmit}>
+        <form onSubmit = {this.handleSubmit}>
             <div className = "form-group">
-                <Input type = "text" id = "product name" pattern="[A-Z]{1}[a-z0-9]{2,15}" onChange = {this.onChange} placeholder= "Name" required />
+                <Input type = "text" id = "product name" pattern="^[A-Za-z0-9_]+( [A-Za-z0-9_" onChange = {this.onChange} placeholder= "Name" required />
             </div>
             <div className = "form-group">
                 <Input type = "number" id = "product price" pattern="[0-9]{20}" onChange = {this.onChange} placeholder= "Price" required/>

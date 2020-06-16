@@ -5,11 +5,7 @@ class Provider extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name:'',
-            surname:'',
-            phone:'',
-            img: null,
-            email:''
+            img: null
         };  
     }
     onMouseEnterHandler (event){
@@ -54,17 +50,20 @@ class Provider extends React.Component {
     }
     
     render(){
+        if (this.props.removeHandler !== undefined){
+            var removeButton = <Button color="danger" value ={this.props.id} onClick ={this.onClick}>Remove</Button>
+        }
         return(<div className = {style.productdiv} onMouseMove = {this.onMouseEnterHandler}  onMouseLeave = {this.onMouseLeaveHandler} >
                     <div className = {style.imageDiv} >
                         <img className = {style.img} src = {this.state.img} alt = {"img"}></img>
                     </div>
                     <div className = {style.div}>
-                        <p>Name: {this.props.name}</p>
-                        <p>SurName: {this.props.surname}</p>
-                        <p> Phone:{this.props.phone}</p>
+                        <p>{this.props.name} {this.props.surname}</p>
+                        <p>email: {this.props.email}</p>
+                        <p> Phone number: 0{this.props.phone}</p>
                     </div>
                     <div>
-                        <Button color="danger" value ={this.props.id} onClick ={this.onClick}>Remove</Button>
+                        {removeButton}
                     </div>
                 </div>
                 );

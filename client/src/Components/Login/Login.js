@@ -24,9 +24,8 @@ class Login extends React.Component {
         e.preventDefault();
         const user  = this.state;
         try {
-
             const result = await fetch('http://localhost:8080/signin', {
-                method: 'Post',
+                method: 'POST',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -56,7 +55,7 @@ class Login extends React.Component {
     render(){
         return(
             <div className={style.App}>
-            <Form className={style.form} onSubmit={this.handleSubmit}>
+                <Form className={style.form} onSubmit={this.handleSubmit}>
                     <Container>
                         <Row>
                             <Col md="6">
@@ -99,9 +98,7 @@ class Login extends React.Component {
                         </Row>
                     </Container>
                 </Form>
-
             </div>
-
         );
     }
 }

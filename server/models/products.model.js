@@ -1,4 +1,4 @@
-  import {connection} from './mysqlConnection'
+import {connection} from './mysqlConnection'
 import mysql from 'mysql'
 
 module.exports.getProducts = function () {
@@ -38,7 +38,6 @@ module.exports.getProducts = function () {
   
       let selectQuery = 'SELECT * FROM Products WHERE ?? = ?';
       let query = mysql.format(selectQuery, array);
-      console.log(query)
       connection.query(query, function (error, results) {
         if (error) {
           reject(error);
@@ -66,8 +65,8 @@ module.exports.getProducts = function () {
   }
   module.exports.addProduct = function (data) {
     return new Promise((resolve, reject) => {
-      console.log(data.productImage)
-      
+      console.log(data)
+      this.addProductInProduct(data)
       let insertQuery = 'INSERT INTO Products (??,??,??,??,??) VALUES (?,?,?,?,?)';
       let query = mysql.format(insertQuery, ["name", "price", "date", "expiration","image", data.productName, data.productPrice, data.productDate, data.expiration,data.productImage]);
       connection.query(query, (error, results) => {
@@ -83,7 +82,37 @@ module.exports.getProducts = function () {
       });
     });
   }
+  module.exports.addProductInProduct = function (data) {
+    return new Promise( async (resolve, reject) =>  {
+      let product = await this.getProductFromProduct(data) 
+      if(product === undefined){
+        let insertQuery = 'INSERT INTO Product (??,??,??) VALUES (?,?,?)';
+        let query = mysql.format(insertQuery, ["name", "price", "image", data.productName, data.productPrice, data.productImage]);
+        connection.query(query, (error, results) => {
+          if (error) {
+            console.error(error);
+            reject(error)
+            return;
+          }
+          resolve(results)
+        });
+      }
+    });
+  }
+  module.exports.getProductFromProduct =  function (product) {
+    return new Promise((resolve, reject) => {
   
+      let selectQuery = 'SELECT * FROM Product WHERE name = ? and price = ?';
+      let query = mysql.format(selectQuery, [product.productName, product.productPrice]);
+      connection.query(query, function (error, results) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results[0]);
+        }
+      });
+    });
+  }
   module.exports.updateProduct = function (data,params) {
     return new Promise((resolve, reject) => {
       let queryParams = []
@@ -124,15 +153,24 @@ module.exports.getProducts = function () {
       let query = mysql.format(selectQuery, array);
       connection.query(query, (error, results) => {
         if (error) {
-          console.error(error);
+          console.error(error, "error");
           reject(error)
           return;
         }
-        let respons = {
-          "message":"success",
-          results
+        let respons = {}
+        if (results.affectedRows === 1){
+          respons = {
+            "message":"success"
+          }
+          resolve(respons)
+        }else{
+          respons = {
+            "errorCode":"404",
+            "message":"productId not found"
+          }
+          reject(respons)
         }
-        resolve(respons)
       });
     });
   }
+        //Create Event IF NOT EXISTS removeProduct ON SCHEDULE EVERY 1 Day  do Delete From Products where expiration < time(now());

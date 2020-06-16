@@ -47,6 +47,9 @@ export default class Shop extends React.Component {
     }
     
     render(){
+        if (this.props.removeHandler !== undefined){
+            var removeButton = <Button color="danger" value ={this.props.id} onClick ={this.onClick}>Remove</Button>
+        }
         return(<div className = {style.productdiv} onMouseMove = {this.onMouseEnterHandler}  onMouseLeave = {this.onMouseLeaveHandler} >
                     <div className = {style.imageDiv} >
                         <img className = {style.img} src = {this.state.img} alt = {"img"}></img>
@@ -54,10 +57,10 @@ export default class Shop extends React.Component {
                     <div className = {style.div}>
                         <p>Name: {this.props.name}</p>
                         <p>Address: {this.props.address}</p>
-                        <p>Phone:{this.props.phone}</p>
+                        <p>Phone: 0{this.props.phone}</p>
                     </div>
                     <div>
-                        <Button color="danger" value ={this.props.id} onClick ={this.onClick}>Remove</Button>
+                        {removeButton}
                     </div>
                 </div>
                 );

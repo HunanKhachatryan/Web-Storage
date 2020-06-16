@@ -3,7 +3,7 @@ import mysql from 'mysql'
 
 module.exports.getShops = function () {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM Shops', function (error, results) {
+      connection.query('SELECT * FROM Shops where isCustomer=true', function (error, results) {
         if (error) {
           reject(error);
         } else {
@@ -15,15 +15,14 @@ module.exports.getShops = function () {
 
   module.exports.addShop = function (data) {
     return new Promise((resolve, reject) => {
-      let insertQuery = 'INSERT INTO Shops (??,??,??,??,??) VALUES (?,?,?,?,?)';
-      let query = mysql.format(insertQuery, ["name", "address", "phone", "email","image", data.name, data.address, data.phone, data.email, data.image]);
+      let insertQuery = 'INSERT INTO Shops (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)';
+      let query = mysql.format(insertQuery, ["name", "address", "phone", "email","isCustomer","image", data.name, data.address, data.phone, data.email,true, data.image]);
       connection.query(query, (error, results) => {
         if (error) {
           console.error(error);
           reject(error)
           return;
         }
-        console.log(results)
         let respons = {
           "message":"succesed",
           "insertId":results.insertId
@@ -32,6 +31,25 @@ module.exports.getShops = function () {
       });
     });
   }
+
+module.exports.updateShopStatus = function (data) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = 'Update Shops set  isCustomer = ? where shopId = ?';
+    let query = mysql.format(insertQuery, [data.isCostomer, data.shopId]);
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error(error);
+        reject(error)
+        return;
+      }
+      let respons = {
+        "message": "successed"
+      }
+      resolve(respons)
+    });
+  });
+}
+
   module.exports.deleteShop = function (params) {
     return new Promise((resolve, reject) => {
         let array = []
