@@ -7,7 +7,6 @@ import mysql from 'mysql'
       let query = mysql.format(insertQuery, ["Products", "name", "price", "date", "expiration","image", data.name, data.price, data.date, data.expiration,  ]);
       connection.query(query, (error, results) => {
         if (error) {
-          console.error(error);
           reject(error)
           return;
         }
